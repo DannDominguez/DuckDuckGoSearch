@@ -14,61 +14,37 @@ import Foundation
 
 import Foundation
 
-// MARK: - Welcome
+//MARK: - Welcome
 struct Welcome: Codable {
-    let abstract, abstractSource, abstractText: String
-    let abstractURL: String
-    let answer, answerType, definition, definitionSource: String
-    let definitionURL, entity, heading, image: String
-    let imageHeight, imageIsLogo, imageWidth: String
-    let infobox: String?
-    let officialDomain: String?
-    let officialWebsite: String?
-    let redirect: String
+
     let relatedTopics: [RelatedTopic]
     let results: [ResultURL] //Se agrego URL
-    let type: String
-    let meta: WelcomeMeta?
+
 
     enum CodingKeys: String, CodingKey {
-        case abstract = "Abstract"
-        case abstractSource = "AbstractSource"
-        case abstractText = "AbstractText"
-        case abstractURL = "AbstractURL"
-        case answer = "Answer"
-        case answerType = "AnswerType"
-        case definition = "Definition"
-        case definitionSource = "DefinitionSource"
-        case definitionURL = "DefinitionURL"
-        case entity = "Entity"
-        case heading = "Heading"
-        case image = "Image"
-        case imageHeight = "ImageHeight"
-        case imageIsLogo = "ImageIsLogo"
-        case imageWidth = "ImageWidth"
-        case infobox = "Infobox"
-        case officialDomain = "OfficialDomain"
-        case officialWebsite = "OfficialWebsite"
-        case redirect = "Redirect"
         case relatedTopics = "RelatedTopics"
         case results = "Results"
-        case type = "Type"
-        case meta
+ 
     }
 }
 
 // MARK: - Infobox
-struct Infobox: Codable  {
+struct Infobox: Codable {
     let content: [Content]
     let meta: [MetaElement]
+    
+    enum CodingKeys: String, CodingKey {
+            case content, meta
+        }
+    
 }
 
 // MARK: - Content
 struct Content: Codable {
     
-    let dataType, label: String
-    let value: ValueUnion
-    let wikiOrder: WikiOrder
+    let dataType, label: String?
+    let value: ValueUnion?//
+    let wikiOrder: WikiOrder?//
 
     enum CodingKeys: String, CodingKey {
         case dataType = "data_type"
@@ -78,9 +54,9 @@ struct Content: Codable {
 }
 
 enum ValueUnion: Codable {
-    case string(String)
-    case stringArray([String])
-    case valueClass(ValueClass)
+    case string(String?) //?
+    case stringArray([String?]) //?
+    case valueClass(ValueClass?) //?
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -114,8 +90,8 @@ enum ValueUnion: Codable {
 
 // MARK: - ValueClass
 struct ValueClass: Codable, Hashable  {
-    let entityType, id: String
-    let numericID: Int
+    let entityType, id: String?
+    let numericID: Int?
 
     enum CodingKeys: String, CodingKey {
         case entityType = "entity-type"
@@ -163,25 +139,25 @@ struct MetaElement: Codable, Hashable  {
 }
 
 // MARK: - WelcomeMeta
-struct WelcomeMeta: Codable, Hashable  {
-    let attribution, blockgroup, createdDate: JSONNull?
-    let description: String
-    let designer, devDate: JSONNull?
-    let devMilestone: String
+struct WelcomeMeta: Codable {
+    let attribution, blockgroup, createdDate: String?
+    let description: String?
+    let designer, devDate: String?
+    let devMilestone: String?
     let developer: [Developer]
     let exampleQuery, id: String
     let isStackexchange: String?
     let jsCallbackName: String
-    let liveDate: JSONNull?
+    let liveDate: String?
     let maintainer: Maintainer
     let name, perlModule: String
-    let producer: JSONNull?
+    let producer: String? //
     let productionState, repo, signalFrom, srcDomain: String
     let srcID: Int
     let srcName: String
     let srcOptions: SrcOptions
-   let srcURL: String?
-    let status, tab: String
+    let srcURL: String?
+    let status, tab: String?
     let topic: [String]
     let unsafe: Int
 
@@ -254,7 +230,7 @@ struct SrcOptions: Codable, Hashable  {
 // MARK: - RelatedTopic
 struct RelatedTopic: Codable, Hashable  {
     let firstURL: String
-    let icon: RelatedTopicIcon
+    let icon: RelatedTopicIcon?
     let result, text: String
 
     enum CodingKeys: String, CodingKey {
@@ -278,9 +254,9 @@ struct RelatedTopicIcon: Codable, Hashable  {
 
 // MARK: - Result
 struct ResultURL: Codable, Hashable  {
-    let firstURL: String
+    let firstURL: String?
     let icon: ResultIcon
-    let result, text: String
+    let result, text: String?
 
     enum CodingKeys: String, CodingKey {
         case firstURL = "FirstURL"
@@ -292,9 +268,9 @@ struct ResultURL: Codable, Hashable  {
 
 // MARK: - ResultIcon
 struct ResultIcon: Codable, Hashable  {
-    let height: Int
-    let url: String
-    let width: Int
+    let height: Int?
+    let url: String?
+    let width: Int?
 
     enum CodingKeys: String, CodingKey {
         case height = "Height"
@@ -305,3 +281,18 @@ struct ResultIcon: Codable, Hashable  {
 
 // MARK: - Encode/decode helpers
 
+
+
+
+//EJEMPLO DE COMO CONTRUIR EL MODELO
+/*struct SearchResultResponse {
+    var abstrac: String?
+}
+
+struct Infobox1 {
+    let content:
+}
+
+struct Content1 {
+    let da
+}*/

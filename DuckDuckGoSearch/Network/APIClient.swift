@@ -10,8 +10,17 @@ import Foundation
 class APIClient {
     
     func getSearchResult(query: String ,completion: @escaping (Result<Welcome, Error>) -> Void) {
+        let urlString = "https://api.duckduckgo.com/?q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&format=json&pretty=1"
         
-        var request = URLRequest(url: URL(string: "https://api.duckduckgo.com/?q=American%2BAirlines&format=json&pretty=1")!,timeoutInterval: Double.infinity)
+        guard let url = URL(string: urlString) else {
+            let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "URL is not valid"])
+            completion(.failure(error))
+            return
+            
+        }
+        
+        var request = URLRequest(url: url,timeoutInterval: Double.infinity)
+        
         request.httpMethod = "GET"
         
         let _: Void = URLSession.shared.dataTask(with: request) { data, response, error in
